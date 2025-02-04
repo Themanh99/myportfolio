@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Work = () => {
+const work = () => {
 	return <div>Work page</div>;
 };
 
-export default Work;
+export default work;
