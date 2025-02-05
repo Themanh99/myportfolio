@@ -20,7 +20,7 @@ const Photo = () => {
 						quality={100}
 						fill
 						priority
-						className="object-contain rounded-full"
+						className="object-contain rounded-full p-[20px]"
 					/>
 				</motion.div>
 
@@ -32,9 +32,9 @@ const Photo = () => {
 					xmlns="http://www.w3.org/2000/svg"
 				>
 					<motion.circle
-						cx="246"
-						cy="250"
-						r="252"
+						cx="248"
+						cy="249"
+						r="240"
 						stroke="#00ff99"
 						strokeWidth="4"
 						strokeLinecap="round"
