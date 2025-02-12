@@ -5,17 +5,13 @@ import {
 	SiTypescript,
 	SiNextdotjs,
 	SiRedux,
-	SiSass,
 	SiMongodb,
-	SiGraphql,
-	SiPostgresql,
 	SiDocker,
 	SiFirebase,
 	SiGit,
 	SiJest,
 	SiTailwindcss,
 } from 'react-icons/si';
-
 // about data
 const about = {
 	title: 'About Me',
@@ -55,14 +51,24 @@ const experience = {
 	title: 'My experience',
 	items: [
 		{
-			position: 'Junior Developer',
+			position: 'Intern Developer',
 			company: 'E-commerce Startup',
 			duration: '2020 - 2020',
 		},
 		{
-			position: 'Front-end Developer',
+			position: 'Fresher Developer',
 			company: 'E-commerce Startup',
 			duration: '2020 - 2021',
+		},
+		{
+			position: 'Fresher Developer',
+			company: 'E-commerce Startup',
+			duration: '2021 - 2021',
+		},
+		{
+			position: 'Fresher Developer',
+			company: 'Fpt software',
+			duration: '01/2021 - 04/2021',
 		},
 		{
 			position: 'Front-end Developer',
@@ -71,7 +77,7 @@ const experience = {
 		},
 	],
 	description:
-		"I'm a full-stack developer with a passion for creating beautiful and functional web applications. I have experience working with a variety of technologies, including React, Node.js, and MongoDB. I'm always looking to learn new things and improve my skills.",
+		"I'm a Front-End developer with a passion for creating beautiful and functional web applications. I have experience working with a variety of technologies, including React, Node.js, and MongoDB. I'm always looking to learn new things and improve my skills.",
 };
 
 // education data
@@ -81,11 +87,6 @@ const education = {
 	skillList: [
 		{
 			institution: 'Udacity Nanodegree',
-			degree: 'React Developer',
-			duration: '2023',
-		},
-		{
-			institution: 'Udacity Nanodegree',
 			degree: 'Front-end Web Developer',
 			duration: '2024',
 		},
@@ -93,6 +94,11 @@ const education = {
 			institution: 'Udacity Nanodegree',
 			degree: 'Full Stack Web Developer',
 			duration: '2024',
+		},
+		{
+			institution: 'Udacity Nanodegree',
+			degree: 'React Developer',
+			duration: '2023',
 		},
 		{
 			institution: 'Udemy Course',
@@ -193,7 +199,7 @@ const Resume = () => {
 			className="min-h-[80vh] flex items-center justify-center py-12 xl:py-0"
 		>
 			<div className="container mx-auto">
-				<Tabs defaultValue="experience" className="flex flex-col xl:flex-row gap-[60px]">
+				<Tabs defaultValue="about" className="flex flex-col xl:flex-row gap-[60px]">
 					<TabsList className="flex flex-col w-full max-w-[380px] mx-auto xl:mx-0 gap-6">
 						<TabsTrigger value="about">About</TabsTrigger>
 						<TabsTrigger value="experience">Experience</TabsTrigger>
@@ -204,7 +210,106 @@ const Resume = () => {
 					<div className="min-h-[70vh] w-full">
 						{/* experience */}
 						<TabsContent value="experience" className="w-full">
-							experience
+							<div className="flex flex-col gap-[30px] text-center xl:text-left">
+								<h3 className="text-4xl font-bold">{experience.title}</h3>
+								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{experience.description}</p>
+								<ScrollArea className="h-[480px]">
+									<ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
+										{experience.items.map((item, index) => {
+											return (
+												<li
+													key={index}
+													className="bg-[#232329] h-[200px] py-6 px-10 rounded-xl flex flex-col justify-center items-center lg:items-start gap-1"
+												>
+													<span className="text-accent">{item.duration}</span>
+													<h3 className="text-xl max-w-[260px] min-h-[60px] text-center lg:text-left">
+														{item.position}
+													</h3>
+													<div className="flex items-center gap-3">
+														{/* dot */}
+														<span className="w-[6px] h-[6px] rounded-full bg-accent"></span>
+														<p className="text-white/60">{item.company}</p>
+													</div>
+												</li>
+											);
+										})}
+									</ul>
+								</ScrollArea>
+							</div>
+						</TabsContent>
+						{/* Education */}
+						<TabsContent value="education" className="w-full">
+							<div className="flex flex-col gap-[30px] text-center xl:text-left">
+								<h3 className="text-4xl font-bold">{education.title}</h3>
+								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{education.description}</p>
+								<ScrollArea className="h-[480px]">
+									<ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
+										{education.skillList.map((item, index) => {
+											return (
+												<li
+													key={index}
+													className="bg-[#232329] h-[200px] py-6 px-10 rounded-xl flex flex-col justify-center items-center lg:items-start gap-1"
+												>
+													<span className="text-accent">{item.duration}</span>
+													<h3 className="text-xl max-w-[260px] min-h-[60px] text-center lg:text-left">{item.degree}</h3>
+													<div className="flex items-center gap-3">
+														{/* dot */}
+														<span className="w-[6px] h-[6px] rounded-full bg-accent"></span>
+														<p className="text-white/60">{item.institution}</p>
+													</div>
+												</li>
+											);
+										})}
+									</ul>
+								</ScrollArea>
+							</div>
+						</TabsContent>
+						{/* About */}
+						<TabsContent value="about" className="w-full text-center xl:text-left">
+							<div className="flex flex-col gap-[30px] text-center xl:text-left">
+								<h3 className="text-4xl font-bold">{about.title}</h3>
+								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{about.description}</p>
+								<ul className="grid grid-cols-1 lg:grid-cols-2 gap-y-6 max-w-[620px] mx-auto xl:mx-0">
+									{about.info.map((item, index) => {
+										return (
+											<li key={index} className="flex items-center justify-center xl:justify-start gap-4">
+												<span className="text-white/60 min-w-[110px]">{item.fieldName}</span>
+												<span className="text-xl">{item.fieldValue}</span>
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+						</TabsContent>
+						{/* Skills */}
+						<TabsContent value="skills" className="w-full">
+							<div className="flex flex-col gap-[30px]">
+								<div className="flex flex-col gap-[30px[ text-center xl:text-left">
+									<h3 className="text-4xl font-bold">{skills.title}</h3>
+									<p className="max-w-[680px] text-white/60 mx-auto xl:mx-0">{skills.description}</p>
+
+									<ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 xl:gap-[30px]">
+										{skills.items.map((item, index) => {
+											return (
+												<li key={index}>
+													<TooltipProvider delayDuration={100}>
+														<Tooltip>
+															<TooltipTrigger className="w-full h-[150px] bg-[#232329] rounded-xl flex justify-center items-center group">
+																<div className="text-6xl group-hover:text-accent transition-all duration-300">
+																	{item.icon}
+																</div>
+															</TooltipTrigger>
+															<TooltipContent>
+																<p className="capitalize">{item.name}</p>
+															</TooltipContent>
+														</Tooltip>
+													</TooltipProvider>
+												</li>
+											);
+										})}
+									</ul>
+								</div>
+							</div>
 						</TabsContent>
 					</div>
 				</Tabs>
