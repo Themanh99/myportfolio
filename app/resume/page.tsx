@@ -77,7 +77,7 @@ const experience = {
 		},
 	],
 	description:
-		"I'm a Front-End developer with a passion for creating beautiful and functional web applications. I have experience working with a variety of technologies, including React, Node.js, and MongoDB. I'm always looking to learn new things and improve my skills.",
+		'Throughout my career, I have gained valuable experience working in various roles, from an intern developer to a front-end developer. My journey began at an e-commerce startup, where I honed my skills in web development. Currently, I am working at Fpt Software, where I contribute to building and maintaining high-quality web applications. My experience has equipped me with a strong foundation in both front-end and back-end technologies, enabling me to deliver comprehensive solutions.',
 };
 
 // education data
