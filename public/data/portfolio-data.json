@@ -1,0 +1,236 @@
+{
+	"meta": {
+		"careerStartDate": "2021-07-01",
+		"githubUsername": "Themanh99",
+		"cvFileName": "ChuTheManh_CV_FullstackDeveloper.pdf"
+	},
+	"home": {
+		"role": "Fullstack Developer",
+		"greeting": "Hello I'm",
+		"name": "Chu The Manh",
+		"description": "4+ years of software engineering experience with a strong focus on Fullstack Development (ReactJS / Node.js). Passionate about building robust, high-performance enterprise applications.",
+		"stats": {
+			"clientsLabel": "Technologies",
+			"clientsCount": 15,
+			"commitsLabel": "Commits code",
+			"commitsCount": 500
+		}
+	},
+	"about": {
+		"title": "About Me",
+		"description": "I'm a fullstack developer with 4+ years of experience building enterprise-level solutions across diverse domains including FinTech, SaaS, and Web3. I specialize in ReactJS and Node.js, and I'm passionate about clean architecture, performance optimization, and mentoring teams.",
+		"info": [
+			{ "fieldName": "Name", "fieldValue": "Chu The Manh" },
+			{ "fieldName": "Phone", "fieldValue": "(+84) 345 574 951" },
+			{ "fieldName": "Email", "fieldValue": "themanhchu99@gmail.com" },
+			{ "fieldName": "DOB", "fieldValue": "14/01/1999" },
+			{ "fieldName": "Freelance", "fieldValue": "Available" },
+			{ "fieldName": "Education", "fieldValue": "Bachelor of Information Technology" },
+			{ "fieldName": "Language", "fieldValue": "Vietnamese, English" },
+			{ "fieldName": "Address", "fieldValue": "Ha Noi, Vietnam" }
+		]
+	},
+	"experience": {
+		"title": "My experience",
+		"description": "Throughout my career, I have delivered enterprise-level Fullstack solutions across diverse domains (FinTech, SaaS, Web3) for global clients, strictly adhering to high standards of the Japanese market. I've architected scalable frontend foundations, led system migrations, and mentored junior developers within Agile/Scrum environments.",
+		"items": [
+			{
+				"position": "Fullstack Developer",
+				"company": "FPT Software",
+				"duration": "07/2021 - Present",
+				"description": "Delivered enterprise-level Fullstack solutions across diverse domains (FinTech, SaaS, Web3) for global clients. Architected scalable frontend foundations, led legacy-to-modern system migrations."
+			},
+			{
+				"position": "Intern Front-End Developer",
+				"company": "Startup Company",
+				"duration": "04/2021 - 07/2021",
+				"description": "Developed UI components using ReactJS and integrated RESTful APIs to deliver foundational web functionalities."
+			}
+		]
+	},
+	"education": {
+		"title": "My education",
+		"description": "I have a strong educational background in Information Technology from Ha Noi University of Industry. Additionally, I have pursued various online certifications to enhance my skills in frontend, React, and Python development.",
+		"items": [
+			{
+				"institution": "Ha Noi University of Industry",
+				"degree": "Bachelor of Information Technology (GPA: 3.1/4.0)",
+				"duration": "2017 - 2021"
+			},
+			{
+				"institution": "Udacity",
+				"degree": "React Certification",
+				"duration": "09/2024"
+			},
+			{
+				"institution": "Udacity",
+				"degree": "Front End Web Developer",
+				"duration": "10/2023"
+			},
+			{
+				"institution": "Udacity",
+				"degree": "Intermediate Python",
+				"duration": "03/2024"
+			},
+			{
+				"institution": "British Council",
+				"degree": "EnglishScore - 466",
+				"duration": "10/2023"
+			}
+		]
+	},
+	"skills": {
+		"title": "My skills",
+		"description": "I have a diverse skill set spanning frontend and backend technologies, with expertise in React.js, Node.js, TypeScript, and modern frameworks. My experience includes building scalable architectures, optimizing performance for large datasets, and working with various databases and DevOps tools.",
+		"items": [
+			{ "name": "html 5", "iconLib": "fa", "iconName": "FaHtml5" },
+			{ "name": "css 3", "iconLib": "fa", "iconName": "FaCss3" },
+			{ "name": "javascript", "iconLib": "fa", "iconName": "FaJs" },
+			{ "name": "typescript", "iconLib": "si", "iconName": "SiTypescript" },
+			{ "name": "react.js", "iconLib": "fa", "iconName": "FaReact" },
+			{ "name": "next.js", "iconLib": "si", "iconName": "SiNextdotjs" },
+			{ "name": "angular", "iconLib": "si", "iconName": "SiAngular" },
+			{ "name": "vue.js", "iconLib": "si", "iconName": "SiVuedotjs" },
+			{ "name": "node.js", "iconLib": "fa", "iconName": "FaNodeJs" },
+			{ "name": "nestjs", "iconLib": "si", "iconName": "SiNestjs" },
+			{ "name": "express", "iconLib": "si", "iconName": "SiExpress" },
+			{ "name": "redux", "iconLib": "si", "iconName": "SiRedux" },
+			{ "name": "tailwindcss", "iconLib": "si", "iconName": "SiTailwindcss" },
+			{ "name": "sass/scss", "iconLib": "si", "iconName": "SiSass" },
+			{ "name": "postgresql", "iconLib": "si", "iconName": "SiPostgresql" },
+			{ "name": "mysql", "iconLib": "si", "iconName": "SiMysql" },
+			{ "name": "mongodb", "iconLib": "si", "iconName": "SiMongodb" },
+			{ "name": "redis", "iconLib": "si", "iconName": "SiRedis" },
+			{ "name": "docker", "iconLib": "si", "iconName": "SiDocker" },
+			{ "name": "git", "iconLib": "si", "iconName": "SiGit" },
+			{ "name": "jest", "iconLib": "si", "iconName": "SiJest" },
+			{ "name": "aws", "iconLib": "fa", "iconName": "FaAws" }
+		]
+	},
+	"projects": [
+		{
+			"num": "01",
+			"category": "fullstack",
+			"title": "Financial Middleware Integration Hub",
+			"description": "Enterprise FinTech platform for HongKong market. Built base frontend architecture, optimized React rendering for 10,000+ rows of financial data, and developed Node.js backend jobs for data pipeline.",
+			"stack": [
+				{ "name": "ReactJS" },
+				{ "name": "TypeScript" },
+				{ "name": "Node.js" },
+				{ "name": "Ant Design" },
+				{ "name": "SQL Server" }
+			],
+			"image": "",
+			"live": "",
+			"github": "",
+			"duration": "01/2025 - Present",
+			"teamSize": 20,
+			"domain": "FinTech (HongKong)"
+		},
+		{
+			"num": "02",
+			"category": "fullstack",
+			"title": "Digital Adoption Platform",
+			"description": "SaaS browser extension & CMS platform. Led Angular migration, built NestJS backend with multi-tenant RBAC, and engineered React-based extension for interactive user tutorials.",
+			"stack": [
+				{ "name": "Angular" },
+				{ "name": "ReactJS" },
+				{ "name": "NestJS" },
+				{ "name": "TypeScript" },
+				{ "name": "MariaDB" }
+			],
+			"image": "",
+			"live": "",
+			"github": "",
+			"duration": "06/2024 - 12/2024",
+			"teamSize": 15,
+			"domain": "SaaS (Vietnam)"
+		},
+		{
+			"num": "03",
+			"category": "fullstack",
+			"title": "Simulation Platform",
+			"description": "EdTech simulation platform for Korean market. Built end-to-end features including email notification module, operational dashboards, and monitoring systems.",
+			"stack": [
+				{ "name": "ReactJS" },
+				{ "name": "Tailwind CSS" },
+				{ "name": "Node.js" },
+				{ "name": "Express" },
+				{ "name": "SQL Server" }
+			],
+			"image": "",
+			"live": "",
+			"github": "",
+			"duration": "06/2024 - 09/2024",
+			"teamSize": 27,
+			"domain": "EdTech (Korea)"
+		},
+		{
+			"num": "04",
+			"category": "fullstack",
+			"title": "Blockchain Data Platform",
+			"description": "Blockchain-based data processing & transaction platform. Engineered monolithic architecture with Docker, developed pure Node.js backend services for blockchain interaction and smart contracts.",
+			"stack": [
+				{ "name": "Node.js" },
+				{ "name": "MariaDB" },
+				{ "name": "Docker" },
+				{ "name": "Vue.js" },
+				{ "name": "Bootstrap" }
+			],
+			"image": "",
+			"live": "",
+			"github": "",
+			"duration": "01/2023 - 06/2024",
+			"teamSize": 20,
+			"domain": "Blockchain (Korea)"
+		},
+		{
+			"num": "05",
+			"category": "frontend",
+			"title": "Accounting Web Application",
+			"description": "Enterprise accounting system for Japanese market with 500+ team members. Owned Tax Calculation and Accounting Calendar modules with complex real-time computations.",
+			"stack": [
+				{ "name": "ReactJS" },
+				{ "name": "TypeScript" },
+				{ "name": "Redux" },
+				{ "name": "SCSS" }
+			],
+			"image": "",
+			"live": "",
+			"github": "",
+			"duration": "02/2022 - 01/2023",
+			"teamSize": 500,
+			"domain": "Accounting (Japan)"
+		},
+		{
+			"num": "06",
+			"category": "frontend",
+			"title": "Web-Based Banking System",
+			"description": "Banking & Financial system for Japanese market. Developed and maintained banking UI modules, automation testing tools, and mentored new developers on project architecture.",
+			"stack": [
+				{ "name": "JSP" },
+				{ "name": "JavaScript" },
+				{ "name": "Java" },
+				{ "name": "Spring Boot" },
+				{ "name": "VBA" }
+			],
+			"image": "",
+			"live": "",
+			"github": "",
+			"duration": "07/2021 - 02/2022",
+			"teamSize": 60,
+			"domain": "Banking (Japan)"
+		}
+	],
+	"contact": {
+		"phone": "(+84) 345 574 951",
+		"phoneRaw": "+84345574951",
+		"email": "themanhchu99@gmail.com",
+		"address": "66B Trieu Khuc, Tan Trieu, Thanh Tri, Ha Noi"
+	},
+	"socials": {
+		"github": "https://github.com/Themanh99",
+		"linkedin": "https://www.linkedin.com/in/the-manh-chu-524772343/",
+		"facebook": "https://www.facebook.com/chu.t.manh.7"
+	}
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -13,117 +13,57 @@ import Link from 'next/link';
 import Image from 'next/image';
 import WorkSliderButton from '@/components/WorkSliderButton';
 
-const projects = [
-	{
-		num: '01',
-		category: 'frontend',
-		title: 'Project 1',
-		description: 'A responsive web application built with HTML, CSS, and JavaScript.',
-		stack: [
-			{
-				name: 'HTML 5',
-			},
-			{
-				name: 'JavaScript',
-			},
-			{
-				name: 'CSS 3',
-			},
-		],
-		image: '/app/work/assets/project1.png',
-		live: 'https://example.com/project1',
-		github: 'https://github.com/username/project1',
-	},
-	{
-		num: '02',
-		category: 'frontend',
-		title: 'Project 2',
-		description: 'A single-page application using React and Redux.',
-		stack: [
-			{
-				name: 'React',
-			},
-			{
-				name: 'Redux',
-			},
-			{
-				name: 'JavaScript',
-			},
-		],
-		image: '/app/work/assets/project2.png',
-		live: 'https://example.com/project2',
-		github: 'https://github.com/username/project2',
-	},
-	{
-		num: '03',
-		category: 'frontend',
-		title: 'Project 3',
-		description: 'A portfolio website built with Next.js and Tailwind CSS.',
-		stack: [
-			{
-				name: 'Next.js',
-			},
-			{
-				name: 'Tailwind CSS',
-			},
-			{
-				name: 'JavaScript',
-			},
-		],
-		image: '/app/work/assets/project3.png',
-		live: 'https://example.com/project3',
-		github: 'https://github.com/username/project3',
-	},
-	{
-		num: '04',
-		category: 'frontend',
-		title: 'Project 4',
-		description: 'An e-commerce site developed with Vue.js and Vuex.',
-		stack: [
-			{
-				name: 'Vue.js',
-			},
-			{
-				name: 'Vuex',
-			},
-			{
-				name: 'JavaScript',
-			},
-		],
-		image: '/app/work/assets/project4.png',
-		live: 'https://example.com/project4',
-		github: 'https://github.com/username/project4',
-	},
-	{
-		num: '05',
-		category: 'frontend',
-		title: 'Project 5',
-		description: 'A blogging platform created with Angular and NgRx.',
-		stack: [
-			{
-				name: 'Angular',
-			},
-			{
-				name: 'NgRx',
-			},
-			{
-				name: 'TypeScript',
-			},
-		],
-		image: '/app/work/assets/project5.png',
-		live: 'https://example.com/project5',
-		github: 'https://github.com/username/project5',
-	},
+interface Project {
+	num: string;
+	category: string;
+	title: string;
+	description: string;
+	stack: Array<{ name: string }>;
+	image: string;
+	live: string;
+	github: string;
+	duration: string;
+	teamSize: number;
+	domain: string;
+}
+
+// Gradient backgrounds for projects without screenshots
+const projectGradients = [
+	'from-emerald-500/20 to-cyan-500/20',
+	'from-violet-500/20 to-fuchsia-500/20',
+	'from-amber-500/20 to-orange-500/20',
+	'from-blue-500/20 to-indigo-500/20',
+	'from-rose-500/20 to-pink-500/20',
+	'from-teal-500/20 to-green-500/20',
 ];
 
-const work = () => {
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [project, setProject] = useState(projects[0]);
+const Work = () => {
+	const [projects, setProjects] = useState<Project[]>([]);
+	const [project, setProject] = useState<Project | null>(null);
+
+	useEffect(() => {
+		fetch('/data/portfolio-data.json')
+			.then((res) => res.json())
+			.then((json) => {
+				setProjects(json.projects);
+				setProject(json.projects[0]);
+			})
+			.catch(console.error);
+	}, []);
 
 	const handleSlideChange = (swiper: { activeIndex: number }) => {
 		const currentIndex = swiper.activeIndex;
 		setProject(projects[currentIndex]);
 	};
+
+	if (!project || projects.length === 0) {
+		return (
+			<div className="min-h-[80vh] flex items-center justify-center">
+				<div className="text-white/60 text-xl">Loading...</div>
+			</div>
+		);
+	}
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -138,12 +78,20 @@ const work = () => {
 							<div className="text-8xl leading-none font-extrabold text-transparent text-outline">{project.num}</div>
 							{/* project category */}
 							<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
-								{project.category} project
+								{project.title}
 							</h2>
+							{/* project meta */}
+							<div className="flex gap-4 text-sm text-white/40">
+								<span>{project.duration}</span>
+								<span>•</span>
+								<span>{project.domain}</span>
+								<span>•</span>
+								<span>Team: {project.teamSize}</span>
+							</div>
 							{/* project description */}
 							<p className="text-white/60">{project.description}</p>
 							{/* stack */}
-							<ul className="flex gap-4">
+							<ul className="flex flex-wrap gap-4">
 								{project.stack.map((item, index) => {
 									return (
 										<li key={index} className="text-xl text-accent">
@@ -157,31 +105,39 @@ const work = () => {
 							<div className="border border-white/20"></div>
 							{/* buttons */}
 							<div className="flex items-center gap-4">
-								<Link href={project.live}>
-									<TooltipProvider delayDuration={100}>
-										<Tooltip>
-											<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
-												<BsArrowUpRight className="text-white text-3xl group-hover:text-accent" />
-											</TooltipTrigger>
-											<TooltipContent>
-												<p>Live project</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-								</Link>
+								{project.live && (
+									<Link href={project.live}>
+										<TooltipProvider delayDuration={100}>
+											<Tooltip>
+												<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
+													<BsArrowUpRight className="text-white text-3xl group-hover:text-accent" />
+												</TooltipTrigger>
+												<TooltipContent>
+													<p>Live project</p>
+												</TooltipContent>
+											</Tooltip>
+										</TooltipProvider>
+									</Link>
+								)}
 
-								<Link href={project.github}>
-									<TooltipProvider delayDuration={100}>
-										<Tooltip>
-											<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
-												<BsGithub className="text-white text-3xl group-hover:text-accent" />
-											</TooltipTrigger>
-											<TooltipContent>
-												<p>Github repo</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-								</Link>
+								{project.github && (
+									<Link href={project.github}>
+										<TooltipProvider delayDuration={100}>
+											<Tooltip>
+												<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
+													<BsGithub className="text-white text-3xl group-hover:text-accent" />
+												</TooltipTrigger>
+												<TooltipContent>
+													<p>Github repo</p>
+												</TooltipContent>
+											</Tooltip>
+										</TooltipProvider>
+									</Link>
+								)}
+
+								{!project.live && !project.github && (
+									<div className="text-white/40 text-sm italic">Enterprise project — source code is private</div>
+								)}
 							</div>
 						</div>
 					</div>
@@ -195,13 +151,28 @@ const work = () => {
 							{projects.map((item, index) => {
 								return (
 									<SwiperSlide key={index} className="w-full">
-										<div className="h-[460px] relative group flex justify-center items-center bg-pink-50/20">
+										<div className="h-[460px] relative group flex justify-center items-center bg-[#232329] rounded-xl overflow-hidden">
 											{/* overlay */}
 											<div className="absolute top-0 bottom-0 w-full h-full bg-black/10 z-10"></div>
-											{/* image */}
-											<div className="relative w-full h-full">
-												<Image src={project.image} fill className="object-cover" alt="image..." />
-											</div>
+											{/* image or gradient placeholder */}
+											{item.image ? (
+												<div className="relative w-full h-full">
+													<Image src={item.image} fill className="object-cover" alt={item.title} />
+												</div>
+											) : (
+												<div className={`w-full h-full bg-gradient-to-br ${projectGradients[index % projectGradients.length]} flex flex-col items-center justify-center gap-6 p-8`}>
+													<div className="text-7xl font-extrabold text-white/10">{item.num}</div>
+													<h3 className="text-2xl font-bold text-white/80 text-center">{item.title}</h3>
+													<p className="text-sm text-white/40 text-center max-w-[300px]">{item.domain}</p>
+													<div className="flex flex-wrap gap-2 justify-center max-w-[350px]">
+														{item.stack.map((tech, i) => (
+															<span key={i} className="px-3 py-1 bg-white/10 rounded-full text-xs text-accent">
+																{tech.name}
+															</span>
+														))}
+													</div>
+												</div>
+											)}
 										</div>
 									</SwiperSlide>
 								);
@@ -220,4 +191,4 @@ const work = () => {
 	);
 };
 
-export default work;
+export default Work;

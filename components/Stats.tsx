@@ -1,27 +1,75 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 
-const stats = [
-	{
-		number: 3,
-		title: 'Years of experience',
-	},
-	{
-		number: 6,
-		title: 'Projects',
-	},
-	{
-		number: 50,
-		title: 'Clients',
-	},
-	{
-		number: 500,
-		title: 'Commits code',
-	},
-];
+interface PortfolioData {
+	meta: {
+		careerStartDate: string;
+		githubUsername: string;
+	};
+	home: {
+		stats: {
+			clientsLabel: string;
+			clientsCount: number;
+			commitsLabel: string;
+			commitsCount: number;
+		};
+	};
+}
+
+function calculateYearsOfExperience(startDate: string): number {
+	const start = new Date(startDate);
+	const now = new Date();
+	const diffMs = now.getTime() - start.getTime();
+	const diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+	return Math.floor(diffYears);
+}
 
 const Stats = () => {
+	const [stats, setStats] = useState([
+		{ number: 0, title: 'Years of experience' },
+		{ number: 0, title: 'GitHub Projects' },
+		{ number: 0, title: 'Technologies' },
+		{ number: 0, title: 'Commits code' },
+	]);
+
+	useEffect(() => {
+		const loadStats = async () => {
+			try {
+				const res = await fetch('/data/portfolio-data.json');
+				const data: PortfolioData = await res.json();
+
+				const yearsOfExp = calculateYearsOfExperience(data.meta.careerStartDate);
+
+				// Fetch GitHub repos count
+				let repoCount = 0;
+				try {
+					const ghRes = await fetch(
+						`https://api.github.com/users/${data.meta.githubUsername}`
+					);
+					if (ghRes.ok) {
+						const ghData = await ghRes.json();
+						repoCount = ghData.public_repos || 0;
+					}
+				} catch {
+					repoCount = 0;
+				}
+
+				setStats([
+					{ number: yearsOfExp, title: 'Years of experience' },
+					{ number: repoCount, title: 'GitHub Projects' },
+					{ number: data.home.stats.clientsCount, title: data.home.stats.clientsLabel },
+					{ number: data.home.stats.commitsCount, title: data.home.stats.commitsLabel },
+				]);
+			} catch (error) {
+				console.error('Failed to load portfolio data:', error);
+			}
+		};
+
+		loadStats();
+	}, []);
+
 	return (
 		<section className="pt-4 pb-12 xl:pt-0 xl:pb-0">
 			<div className="container mx-auto">

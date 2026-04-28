@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,29 +14,76 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { FaPhoneAlt, FaEnvelope, FaMapMarkedAlt } from 'react-icons/fa';
-
-const info = [
-	{
-		icon: <FaPhoneAlt />,
-		title: 'Phone',
-		description: '(+84) 345 574 951',
-	},
-	{
-		icon: <FaEnvelope />,
-		title: 'Email',
-		description: 'themanhchu99@gmail.com',
-	},
-	{
-		icon: <FaMapMarkedAlt />,
-		title: 'Address',
-		description: 'Thanh Xuan , Ha Noi',
-	},
-];
+import { FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaCopy, FaCheck } from 'react-icons/fa';
 
 import { motion } from 'framer-motion';
 
+interface ContactData {
+	contact: {
+		phone: string;
+		phoneRaw: string;
+		email: string;
+		address: string;
+	};
+}
+
 const Contact = () => {
+	const [contactData, setContactData] = useState<ContactData['contact'] | null>(null);
+	const [copied, setCopied] = useState(false);
+
+	useEffect(() => {
+		fetch('/data/portfolio-data.json')
+			.then((res) => res.json())
+			.then((json) => setContactData(json.contact))
+			.catch(console.error);
+	}, []);
+
+	const handleCopyEmail = async () => {
+		if (!contactData) return;
+		try {
+			await navigator.clipboard.writeText(contactData.email);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		} catch {
+			// Fallback for older browsers
+			const textArea = document.createElement('textarea');
+			textArea.value = contactData.email;
+			document.body.appendChild(textArea);
+			textArea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textArea);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		}
+	};
+
+	const phone = contactData?.phone ?? '(+84) 345 574 951';
+	const phoneRaw = contactData?.phoneRaw ?? '+84345574951';
+	const email = contactData?.email ?? 'themanhchu99@gmail.com';
+	const address = contactData?.address ?? '66B Trieu Khuc, Tan Trieu, Thanh Tri, Ha Noi';
+
+	const info = [
+		{
+			icon: <FaPhoneAlt />,
+			title: 'Phone',
+			description: phone,
+			href: `tel:${phoneRaw}`,
+		},
+		{
+			icon: <FaEnvelope />,
+			title: 'Email',
+			description: email,
+			href: `mailto:${email}`,
+			copyable: true,
+		},
+		{
+			icon: <FaMapMarkedAlt />,
+			title: 'Address',
+			description: address,
+			href: '',
+		},
+	];
+
 	return (
 		<motion.section
 			className="py-6"
@@ -93,7 +141,32 @@ const Contact = () => {
 										</div>
 										<div className="flex-1">
 											<p className="text-white/60">{item.title}</p>
-											<h3 className="text-xl">{item.description}</h3>
+											<div className="flex items-center gap-3">
+												{item.href ? (
+													<a
+														href={item.href}
+														className="text-xl hover:text-accent transition-colors duration-300"
+														target={item.title === 'Email' ? undefined : undefined}
+													>
+														{item.description}
+													</a>
+												) : (
+													<h3 className="text-xl">{item.description}</h3>
+												)}
+												{item.copyable && (
+													<button
+														onClick={handleCopyEmail}
+														className="p-2 rounded-md hover:bg-accent/20 transition-colors duration-300 group"
+														title={copied ? 'Copied!' : 'Copy email'}
+													>
+														{copied ? (
+															<FaCheck className="text-accent text-sm" />
+														) : (
+															<FaCopy className="text-white/40 group-hover:text-accent text-sm transition-colors duration-300" />
+														)}
+													</button>
+												)}
+											</div>
 										</div>
 									</li>
 								);
