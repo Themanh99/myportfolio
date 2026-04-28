@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
 	FaHtml5,
 	FaCss3,
@@ -32,6 +32,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { motion } from 'framer-motion';
+import { portfolioData, getExperienceLabel } from '@/lib/portfolio-data';
 
 // Icon mapping — maps JSON iconName to actual React component
 const iconMap: Record<string, React.ReactNode> = {
@@ -59,89 +60,24 @@ const iconMap: Record<string, React.ReactNode> = {
 	SiSass: <SiSass />,
 };
 
-interface PortfolioData {
-	meta: { careerStartDate: string };
-	about: {
-		title: string;
-		description: string;
-		info: Array<{ fieldName: string; fieldValue: string }>;
-	};
-	experience: {
-		title: string;
-		description: string;
-		items: Array<{
-			position: string;
-			company: string;
-			duration: string;
-			description: string;
-		}>;
-	};
-	education: {
-		title: string;
-		description: string;
-		items: Array<{
-			institution: string;
-			degree: string;
-			duration: string;
-		}>;
-	};
-	skills: {
-		title: string;
-		description: string;
-		items: Array<{
-			name: string;
-			iconLib: string;
-			iconName: string;
-		}>;
-	};
-}
-
-function calculateExperienceLabel(startDate: string): string {
-	const start = new Date(startDate);
-	const now = new Date();
-	const diffMs = now.getTime() - start.getTime();
-	const diffYears = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365.25));
-	return `${diffYears}+ Years`;
-}
-
 const Resume = () => {
-	const [data, setData] = useState<PortfolioData | null>(null);
-
-	useEffect(() => {
-		fetch('/data/portfolio-data.json')
-			.then((res) => res.json())
-			.then((json) => setData(json))
-			.catch(console.error);
-	}, []);
+	const { about, experience, education, skills } = portfolioData;
 
 	const aboutInfo = useMemo(() => {
-		if (!data) return [];
-		return data.about.info.map((item) => {
+		return about.info.map((item) => {
 			if (item.fieldName === 'Experience') {
-				return {
-					...item,
-					fieldValue: calculateExperienceLabel(data.meta.careerStartDate),
-				};
+				return { ...item, fieldValue: getExperienceLabel() };
 			}
 			return item;
 		});
-	}, [data]);
+	}, [about.info]);
 
 	const skillItems = useMemo(() => {
-		if (!data) return [];
-		return data.skills.items.map((item) => ({
+		return skills.items.map((item) => ({
 			icon: iconMap[item.iconName] || <FaJs />,
 			name: item.name,
 		}));
-	}, [data]);
-
-	if (!data) {
-		return (
-			<div className="min-h-[80vh] flex items-center justify-center">
-				<div className="text-white/60 text-xl">Loading...</div>
-			</div>
-		);
-	}
+	}, [skills.items]);
 
 	return (
 		<motion.div
@@ -162,11 +98,11 @@ const Resume = () => {
 						{/* experience */}
 						<TabsContent value="experience" className="w-full">
 							<div className="flex flex-col gap-[30px] text-center xl:text-left">
-								<h3 className="text-4xl font-bold">{data.experience.title}</h3>
-								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{data.experience.description}</p>
+								<h3 className="text-4xl font-bold">{experience.title}</h3>
+								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{experience.description}</p>
 								<ScrollArea className="h-[480px]">
 									<ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-										{data.experience.items.map((item, index) => {
+										{experience.items.map((item, index) => {
 											return (
 												<li
 													key={index}
@@ -177,7 +113,6 @@ const Resume = () => {
 														{item.position}
 													</h3>
 													<div className="flex items-center gap-3">
-														{/* dot */}
 														<span className="w-[6px] h-[6px] rounded-full bg-accent"></span>
 														<p className="text-white/60">{item.company}</p>
 													</div>
@@ -191,22 +126,23 @@ const Resume = () => {
 						{/* Education */}
 						<TabsContent value="education" className="w-full">
 							<div className="flex flex-col gap-[30px] text-center xl:text-left">
-								<h3 className="text-4xl font-bold">{data.education.title}</h3>
-								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{data.education.description}</p>
+								<h3 className="text-4xl font-bold">{education.title}</h3>
+								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{education.description}</p>
 								<ScrollArea className="h-[480px]">
 									<ul className="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-										{data.education.items.map((item, index) => {
+										{education.items.map((item, index) => {
 											return (
 												<li
 													key={index}
-													className="bg-[#232329] h-[200px] py-6 px-10 rounded-xl flex flex-col justify-center items-center lg:items-start gap-1"
+													className="bg-[#232329] min-h-[200px] py-6 px-10 rounded-xl flex flex-col justify-center items-center lg:items-start gap-1"
 												>
 													<span className="text-accent">{item.duration}</span>
-													<h3 className="text-xl max-w-[260px] min-h-[60px] text-center lg:text-left">{item.degree}</h3>
+													<h3 className="text-lg max-w-[280px] min-h-[50px] text-center lg:text-left leading-snug">
+														{item.degree}
+													</h3>
 													<div className="flex items-center gap-3">
-														{/* dot */}
-														<span className="w-[6px] h-[6px] rounded-full bg-accent"></span>
-														<p className="text-white/60">{item.institution}</p>
+														<span className="w-[6px] h-[6px] rounded-full bg-accent flex-shrink-0"></span>
+														<p className="text-white/60 text-sm">{item.institution}</p>
 													</div>
 												</li>
 											);
@@ -218,14 +154,14 @@ const Resume = () => {
 						{/* About */}
 						<TabsContent value="about" className="w-full text-center xl:text-left">
 							<div className="flex flex-col gap-[30px] text-center xl:text-left">
-								<h3 className="text-4xl font-bold">{data.about.title}</h3>
-								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{data.about.description}</p>
-								<ul className="grid grid-cols-1 lg:grid-cols-2 gap-y-6 max-w-[620px] mx-auto xl:mx-0">
+								<h3 className="text-4xl font-bold">{about.title}</h3>
+								<p className="max-w-[600px] text-white/60 mx-auto xl:mx-0">{about.description}</p>
+								<ul className="grid grid-cols-1 lg:grid-cols-2 gap-y-6 max-w-[680px] mx-auto xl:mx-0">
 									{aboutInfo.map((item, index) => {
 										return (
 											<li key={index} className="flex items-center justify-center xl:justify-start gap-4">
-												<span className="text-white/60 min-w-[110px]">{item.fieldName}</span>
-												<span className="text-xl">{item.fieldValue}</span>
+												<span className="text-white/60 min-w-[100px] text-sm">{item.fieldName}</span>
+												<span className="text-base break-all">{item.fieldValue}</span>
 											</li>
 										);
 									})}
@@ -236,8 +172,8 @@ const Resume = () => {
 						<TabsContent value="skills" className="w-full">
 							<div className="flex flex-col gap-[30px]">
 								<div className="flex flex-col gap-[30px] text-center xl:text-left">
-									<h3 className="text-4xl font-bold">{data.skills.title}</h3>
-									<p className="max-w-[680px] text-white/60 mx-auto xl:mx-0">{data.skills.description}</p>
+									<h3 className="text-4xl font-bold">{skills.title}</h3>
+									<p className="max-w-[680px] text-white/60 mx-auto xl:mx-0">{skills.description}</p>
 
 									<ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 xl:gap-[30px]">
 										{skillItems.map((item, index) => {

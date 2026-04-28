@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -12,20 +12,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Link from 'next/link';
 import Image from 'next/image';
 import WorkSliderButton from '@/components/WorkSliderButton';
-
-interface Project {
-	num: string;
-	category: string;
-	title: string;
-	description: string;
-	stack: Array<{ name: string }>;
-	image: string;
-	live: string;
-	github: string;
-	duration: string;
-	teamSize: number;
-	domain: string;
-}
+import { portfolioData } from '@/lib/portfolio-data';
 
 // Gradient backgrounds for projects without screenshots
 const projectGradients = [
@@ -38,31 +25,13 @@ const projectGradients = [
 ];
 
 const Work = () => {
-	const [projects, setProjects] = useState<Project[]>([]);
-	const [project, setProject] = useState<Project | null>(null);
-
-	useEffect(() => {
-		fetch('/data/portfolio-data.json')
-			.then((res) => res.json())
-			.then((json) => {
-				setProjects(json.projects);
-				setProject(json.projects[0]);
-			})
-			.catch(console.error);
-	}, []);
+	const projects = portfolioData.projects;
+	const [project, setProject] = useState(projects[0]);
 
 	const handleSlideChange = (swiper: { activeIndex: number }) => {
 		const currentIndex = swiper.activeIndex;
 		setProject(projects[currentIndex]);
 	};
-
-	if (!project || projects.length === 0) {
-		return (
-			<div className="min-h-[80vh] flex items-center justify-center">
-				<div className="text-white/60 text-xl">Loading...</div>
-			</div>
-		);
-	}
 
 	return (
 		<motion.div
@@ -76,7 +45,7 @@ const Work = () => {
 						<div className="flex flex-col gap-[30px] h-[50%]">
 							{/* outline num */}
 							<div className="text-8xl leading-none font-extrabold text-transparent text-outline">{project.num}</div>
-							{/* project category */}
+							{/* project title */}
 							<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
 								{project.title}
 							</h2>

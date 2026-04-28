@@ -2,73 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
-
-interface PortfolioData {
-	meta: {
-		careerStartDate: string;
-		githubUsername: string;
-	};
-	home: {
-		stats: {
-			clientsLabel: string;
-			clientsCount: number;
-			commitsLabel: string;
-			commitsCount: number;
-		};
-	};
-}
-
-function calculateYearsOfExperience(startDate: string): number {
-	const start = new Date(startDate);
-	const now = new Date();
-	const diffMs = now.getTime() - start.getTime();
-	const diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
-	return Math.floor(diffYears);
-}
+import { portfolioData, getYearsOfExperience } from '@/lib/portfolio-data';
 
 const Stats = () => {
-	const [stats, setStats] = useState([
-		{ number: 0, title: 'Years of experience' },
-		{ number: 0, title: 'GitHub Projects' },
-		{ number: 0, title: 'Technologies' },
-		{ number: 0, title: 'Commits code' },
-	]);
+	// Initialize with static data immediately — no loading state
+	const yearsOfExp = getYearsOfExperience();
+	const [githubRepos, setGithubRepos] = useState(0);
 
 	useEffect(() => {
-		const loadStats = async () => {
-			try {
-				const res = await fetch('/data/portfolio-data.json');
-				const data: PortfolioData = await res.json();
+		// Only fetch GitHub repos count on client — the rest is instant
+		const controller = new AbortController();
+		fetch(`https://api.github.com/users/${portfolioData.meta.githubUsername}`, {
+			signal: controller.signal,
+		})
+			.then((res) => (res.ok ? res.json() : null))
+			.then((data) => {
+				if (data?.public_repos) setGithubRepos(data.public_repos);
+			})
+			.catch(() => {});
 
-				const yearsOfExp = calculateYearsOfExperience(data.meta.careerStartDate);
-
-				// Fetch GitHub repos count
-				let repoCount = 0;
-				try {
-					const ghRes = await fetch(
-						`https://api.github.com/users/${data.meta.githubUsername}`
-					);
-					if (ghRes.ok) {
-						const ghData = await ghRes.json();
-						repoCount = ghData.public_repos || 0;
-					}
-				} catch {
-					repoCount = 0;
-				}
-
-				setStats([
-					{ number: yearsOfExp, title: 'Years of experience' },
-					{ number: repoCount, title: 'GitHub Projects' },
-					{ number: data.home.stats.clientsCount, title: data.home.stats.clientsLabel },
-					{ number: data.home.stats.commitsCount, title: data.home.stats.commitsLabel },
-				]);
-			} catch (error) {
-				console.error('Failed to load portfolio data:', error);
-			}
-		};
-
-		loadStats();
+		return () => controller.abort();
 	}, []);
+
+	const stats = [
+		{ number: yearsOfExp, title: 'Years of experience' },
+		{ number: githubRepos, title: 'GitHub Projects' },
+		{ number: portfolioData.home.stats.clientsCount, title: portfolioData.home.stats.clientsLabel },
+		{ number: portfolioData.home.stats.commitsCount, title: portfolioData.home.stats.commitsLabel },
+	];
 
 	return (
 		<section className="pt-4 pb-12 xl:pt-0 xl:pb-0">

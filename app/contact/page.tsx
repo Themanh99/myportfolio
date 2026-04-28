@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,37 +17,21 @@ import {
 import { FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaCopy, FaCheck } from 'react-icons/fa';
 
 import { motion } from 'framer-motion';
-
-interface ContactData {
-	contact: {
-		phone: string;
-		phoneRaw: string;
-		email: string;
-		address: string;
-	};
-}
+import { portfolioData } from '@/lib/portfolio-data';
 
 const Contact = () => {
-	const [contactData, setContactData] = useState<ContactData['contact'] | null>(null);
 	const [copied, setCopied] = useState(false);
-
-	useEffect(() => {
-		fetch('/data/portfolio-data.json')
-			.then((res) => res.json())
-			.then((json) => setContactData(json.contact))
-			.catch(console.error);
-	}, []);
+	const { phone, phoneRaw, email, address } = portfolioData.contact;
 
 	const handleCopyEmail = async () => {
-		if (!contactData) return;
 		try {
-			await navigator.clipboard.writeText(contactData.email);
+			await navigator.clipboard.writeText(email);
 			setCopied(true);
 			setTimeout(() => setCopied(false), 2000);
 		} catch {
 			// Fallback for older browsers
 			const textArea = document.createElement('textarea');
-			textArea.value = contactData.email;
+			textArea.value = email;
 			document.body.appendChild(textArea);
 			textArea.select();
 			document.execCommand('copy');
@@ -57,17 +41,13 @@ const Contact = () => {
 		}
 	};
 
-	const phone = contactData?.phone ?? '(+84) 345 574 951';
-	const phoneRaw = contactData?.phoneRaw ?? '+84345574951';
-	const email = contactData?.email ?? 'themanhchu99@gmail.com';
-	const address = contactData?.address ?? '66B Trieu Khuc, Tan Trieu, Thanh Tri, Ha Noi';
-
 	const info = [
 		{
 			icon: <FaPhoneAlt />,
 			title: 'Phone',
 			description: phone,
 			href: `tel:${phoneRaw}`,
+			copyable: false,
 		},
 		{
 			icon: <FaEnvelope />,
@@ -81,6 +61,7 @@ const Contact = () => {
 			title: 'Address',
 			description: address,
 			href: '',
+			copyable: false,
 		},
 	];
 
@@ -146,7 +127,6 @@ const Contact = () => {
 													<a
 														href={item.href}
 														className="text-xl hover:text-accent transition-colors duration-300"
-														target={item.title === 'Email' ? undefined : undefined}
 													>
 														{item.description}
 													</a>

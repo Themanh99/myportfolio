@@ -1,39 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Photo from '@/components/Photo';
 import Social from '@/components/Social';
 import Stats from '@/components/Stats';
 import { Button } from '@/components/ui/button';
 import { FiDownload } from 'react-icons/fi';
-
-interface HomeData {
-	meta: { cvFileName: string };
-	home: {
-		role: string;
-		greeting: string;
-		name: string;
-		description: string;
-	};
-}
+import { portfolioData } from '@/lib/portfolio-data';
 
 export default function Home() {
-	const [data, setData] = useState<HomeData | null>(null);
-
-	useEffect(() => {
-		fetch('/data/portfolio-data.json')
-			.then((res) => res.json())
-			.then((json) => setData(json))
-			.catch(console.error);
-	}, []);
-
-	const role = data?.home.role ?? 'Fullstack Developer';
-	const greeting = data?.home.greeting ?? "Hello I'm";
-	const name = data?.home.name ?? 'Chu The Manh';
-	const description =
-		data?.home.description ??
-		'I excel at crafting elegant digital experiences and I am proficient in various programming languages and technologies.';
-	const cvFile = data?.meta.cvFileName ?? 'ChuTheManh_CV_FullstackDeveloper.pdf';
+	const { role, greeting, name, description } = portfolioData.home;
+	const cvFile = portfolioData.meta.cvFileName;
 
 	return (
 		<section className="h-full">
